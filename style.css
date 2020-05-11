@@ -1,0 +1,196 @@
+:root {
+    --base-line-height: 1.5rem; /*rounding error in lineheight if not integer*/
+    --modal-scale: 1.44rem;
+    --base-font-size: 112.5%; /*18px*/
+}
+html{
+    font-size: var(--base-font-size); 
+}
+
+body {
+    font-family: 'Hind', sans-serif;
+    line-height: var(--base-line-height);
+    margin: var(--base-line-height);
+}
+
+#editor {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    position: relative;
+}
+#editor>aside {
+    flex-shrink: 0;
+}
+
+
+article{
+    max-width: calc(26*var(--base-line-height));
+    padding: calc(var(--base-line-height));
+}
+article:hover {
+    background: repeating-linear-gradient(transparent 0 var(--base-line-height),
+  #DEF var(--base-line-height) calc(2*var(--base-line-height)));
+}
+
+.v-block {
+    margin-bottom:var(--base-line-height);
+}
+.v-block.selected {
+    background-color: #FEDA;
+    box-shadow: 0px 0px 0px 4px #5AF;
+}
+.v-block:hover {
+    background-color: #FEDA;
+}
+.v-block textarea {
+    box-shadow: 0px 0px 0px 4px red;
+}
+
+textarea {
+    white-space: normal;
+    resize: none;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: inherit;
+}
+
+.image {
+    width: calc(12/26*100%);
+    margin-right: calc(2*var(--base-line-height));
+    float:left;
+}
+img {
+    width: 100%;
+}
+@media (max-width: 560px){
+    .image {
+        width: 100%
+    }
+}
+
+input[type="file"] {
+    line-height: inherit;
+    font: inherit;
+    font-size: 0.8em;
+    z-index: 10;
+    box-shadow: 0px 0px 0px 4px red;
+    width: 100%;
+}
+
+blockquote {
+    margin: 0;
+    margin-top: var(--base-line-height);
+    margin-left: calc(-1.5rem - 4px);
+    padding-left: 1.5rem;
+    border-left: 4px solid #333;
+}
+blockquote>header {
+    font-family: "Gentium Book Basic", serif;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+blockquote>header::before {
+    position: absolute;
+    margin-left: -1em;
+    width: 1em;
+    text-align: right;
+    content: '\201C';
+}
+blockquote>header::after {
+    content: '\201D';
+}
+blockquote.editing>header::after {
+    display: none;
+}
+blockquote>footer {
+    font-size: 0.8rem;
+    color: #555;
+}
+blockquote>footer::before {
+    position: absolute;
+    margin-left: -1em;
+    width: 1em;
+    text-align: right;
+    content: '\2014';
+}
+
+p {
+    margin-top: var(--base-line-height);
+}
+h1, h2, h3, h4 {
+    font-family: "Literata", serif;
+    font-weight: 500;
+    margin-top: calc(2*var(--base-line-height));
+}
+
+p + h1, p + h2, p + h3, p + h4 {
+    /*margin-top: calc(2*var(--base-line-height));*/
+}
+
+h3 {
+    line-height: var(--base-line-height);
+    font-size: var(--modal-scale);
+}
+h2 {
+    line-height: calc(2*var(--base-line-height));
+    font-size: 2rem;
+}
+h1 {
+    line-height: calc(2*var(--base-line-height));
+    font-size: calc(2*var(--modal-scale));
+}
+
+i:hover {
+    color: red;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    cursor: pointer;
+}
+.tooltip {
+    visibility: hidden;
+}
+
+#editTools {
+    /*visibility: hidden;*/
+    position: relative;
+    display: inline-block;
+    margin-right: 1em;
+    text-align: right;
+}
+#editTools>li {
+    cursor: pointer;
+}
+#editTools>li>i {
+    width: 1em;
+    text-align: center;
+    vertical-align: middle;
+}
+#editTools>li:hover>.tooltip {
+    visibility: visible;
+}
+
+#addTools {
+    display: inline-block;
+}
+#addTools>ul {
+    font-size: var(--modal-scale);
+}
+#addTools li {
+    display: inline-block;
+    margin-right: 0.3em;
+}
+#addTools:hover .tooltip {
+    visibility: visible;
+}
