@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
 
-<link href="../fontawesome5/css/all.css" rel="stylesheet">
+<link href="fontawesome5/css/all.css" rel="stylesheet">
 
 <link href="style.css" rel="stylesheet">
 
@@ -322,7 +322,7 @@ var app = new Vue({
             },
             {
                 type: "img",
-                content: "../images/q3kl2jtzr9f21.jpg"
+                content: "q3kl2jtzr9f21.jpg"
             },
             {
                 type: "p",
