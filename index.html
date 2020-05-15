@@ -1,18 +1,18 @@
 
 <body>
 <div id="postlist">
-    <ul>
-        <li v-for="post in posts">{{post.title}}</li>
-    </ul>
+
+    <router-link to="/"> Post List </router-link>
+    <router-link to="about"> About </router-link>
+    <router-link to="contact"> Contact </router-link>
+
+    <router-view></router-view>
 </div>
 
-<router-link to="/foo">Go to Foo</router-link>
-<router-link to="/bar">Go to Bar</router-link>
-
-<router-view></router-view>
+<a href="edit.html">Edit post</a>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script src="https://unpkg.com/vue-router"></script>
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
@@ -35,36 +35,86 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-
-
-const Foo = { template: '<div>foo</div>' }
-const Bar = { template: '<div>bar</div>' }
-
-const routes = [
-    { path: '/foo', component: Foo },
-    { path: '/bar', component: Bar }
-]
-
-const router = new VueRouter({
-    routes // short for `routes: routes`
-})
-
-
-var app = new Vue({
-    router: router,
-        el: "#postlist",
-        data: {
+var PostList = {
+	template: `    <ul>
+        <li v-for="(post,index) in posts">
+            <router-link :to="postPath(index)"> {{ post.title }} </router-link>
+        </li>
+        
+    </ul>`,
+    data: function() {
+        return {
             posts: []
+        }
+    },
+    methods: {
+            postPath(id) {
+                return "post/" + id;
+            }
         },
-        created() {
+    async created() {
             const vm = this;
 
             var postRef = firebase.database().ref("posts");
-            var posts = postRef.once('value', function(x) {
-                posts = x.val();
-                console.log(x.val());
-                vm.posts.push(x.val()[0]);
-            });
+            this.posts = (await postRef.once('value')).val();
+        }
+
+};
+
+var About = {
+	template: "<div><h1>About</h1><p>This is about page</p></div>"
+};
+
+var Contact = {
+	template: "<div><h1>Contact</h1><p>This is contact page</p></div>"
+};
+
+var Post = {
+    template: "<div><h1> {{ post.title }} </h1><p>{{$route.params.id}}</p></div>",
+    data: function() {
+        return {
+            post: {}
+        }
+    },
+    async created() {
+        var postRef = firebase.database().ref("posts/").child('0');
+            this.post = (await postRef.once('value')).val();
+    }
+}
+/*var Post = {
+    props: ['post'],
+    template: '<div>{{post.title}}</div>'
+}*/
+
+var routes = [
+  { path: '/', component: PostList },
+  { path: '/about', component: About },
+  { path: '/contact', component: Contact },
+  { path: '/post/:id', component: Post}
+];
+
+var router = new VueRouter({
+  routes: routes,
+  //mode: 'history',
+  base: '/'
+});
+
+var app = new Vue({
+        el: "#postlist",
+        router: router,
+        data: {
+            posts: []
+        },
+        methods: {
+            postPath(id) {
+                return "post/" + id;
+            }
+        },
+        async created() {
+            const vm = this;
+
+            var postRef = firebase.database().ref("posts");
+            this.posts = (await postRef.once('value')).val();
         }
     });
 
