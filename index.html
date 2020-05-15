@@ -1,3 +1,12 @@
+<link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,600i,700,700i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Hind:300,400,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Basic:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+
+<link href="style.css" rel="stylesheet">
+
 
 <body>
 <div id="postlist">
@@ -20,6 +29,26 @@
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
+
+    <script type="text/x-template" id="s-block-template">
+    <component :is="blocktype" :item="this.item" :editing="this.editing" class="s-block" :class="{editing: this.editing}" @click="onClick" @input="onInput" />
+</script>
+
+<script type="text/x-template" id="s-quote-template">
+    <blockquote @click="onClick">
+        <s-text :item="{type: 'header', content: this.item.content}" :editing="this.editing" @input="onInput" />
+        <s-text :item="{type: 'footer', content: this.item.footer}" :editing="this.editing" @input="onInputFooter" />
+    </blockquote>
+</script>
+
+<script type="text/x-template" id="s-image-template">
+    <div class="image" @click="onClick">
+        <img :src="this.item.content" />
+        <input v-show="this.editing" type="file" accept="image/*" @input="onInput" />
+    </div>
+</script>
+
+<script src="components.js"></script>
 
 <script>
 // Your web app's Firebase configuration
@@ -70,11 +99,17 @@ var Contact = {
 };
 
 var Post = {
-    template: "<div><h1> {{ post.title }} </h1><p>{{$route.params.id}}</p></div>",
+    template: `<article>
+            <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
+            <p>{{$route.params.id}}</p>
+        </article>`,
     data: function() {
         return {
             post: {}
         }
+    },
+    components: {
+        "s-block" : sBlock
     },
     async created() {
         var postRef = firebase.database().ref("posts/").child('0');
@@ -100,23 +135,23 @@ var router = new VueRouter({
 });
 
 var app = new Vue({
-        el: "#postlist",
-        router: router,
-        data: {
-            posts: []
-        },
-        methods: {
-            postPath(id) {
-                return "post/" + id;
-            }
-        },
-        async created() {
-            const vm = this;
-
-            var postRef = firebase.database().ref("posts");
-            this.posts = (await postRef.once('value')).val();
+    el: "#postlist",
+    router: router,
+    data: {
+        posts: []
+    },
+    methods: {
+        postPath(id) {
+            return "post/" + id;
         }
-    });
+    },
+    async created() {
+        const vm = this;
+
+        var postRef = firebase.database().ref("posts");
+        this.posts = (await postRef.once('value')).val();
+    }
+});
 
 </script>
 </body>

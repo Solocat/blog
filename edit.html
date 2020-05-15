@@ -17,10 +17,12 @@
                 </li>
             </ul>
         </aside>
-
-        <article>
-            <s-block v-for="(block, index) in blocks" :item="block" :editing="blockIsEditing(index)" :key="index" @click="selectBlock(index)" :class="{selected: index == selectedIndex}"></s-block>
-
+        <main>
+            <article>
+                <s-block v-for="(block, index) in blocks" :item="block" :editing="blockIsEditing(index)" :key="index" @click="selectBlock(index)" :class="{selected: index == selectedIndex}"></s-block>
+    
+          
+            </article>
             <div id="addTools">
                 <ul>
                     <li v-for="tool in addTools" @mouseover="hover(tool.text)" @click="addBlock(tool.type)">
@@ -29,7 +31,8 @@
                 </ul>
                 <span class="tooltip">{{addTooltip}}</span>
             </div>
-        </article>
+        </main>
+      
     </div>
 
 </body>
