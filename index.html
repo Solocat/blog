@@ -58,6 +58,49 @@
 </script>
 
 <script>
+
+    var sFormatted = {
+        props: ['text'],
+        render: function (h) {
+            var el = this;
+
+            if (this.text.indexOf("http") < 0) {
+                return h('p', this.text);
+            }
+            var children = []
+
+            var res = this.text;
+            var pieces = res.split(" ");
+            for (const p of pieces) {
+                if (p.startsWith("http")) {
+                    children.push(h("a", {
+                        domProps: {
+                            innerHTML: this.shortLink(p)
+                        },
+                        attrs: {
+                            href: p,
+                            target: "_blank"
+                        },
+                    }));
+                }
+                else if (p != " ") {
+                    children.push(p);
+                }
+                children.push(" "); //readd spaces
+            }
+            children.pop(); //trim last space
+
+            return h('p', children);
+        },
+        methods: {
+            shortLink(link) {
+                var s = link.split("://")[1];
+                s.replace("www.", "");
+                return s;
+            }
+        }
+    }
+
     var vText = {
     props: ['item', 'editing'],
     render(createElement) {
