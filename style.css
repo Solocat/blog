@@ -4,7 +4,7 @@
     --base-font-size: 112.5%; /*18px*/
 }
 html{
-    font-size: var(--base-font-size); 
+    font-size: var(--base-font-size);
 }
 
 body {
@@ -28,7 +28,7 @@ article{
     max-width: calc(26*var(--base-line-height));
     padding: calc(var(--base-line-height));
 }
-article:hover {
+#editor article:hover {
     background: repeating-linear-gradient(transparent 0 var(--base-line-height),
   #DEF var(--base-line-height) calc(2*var(--base-line-height)));
 }
