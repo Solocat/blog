@@ -5,18 +5,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
 
-<link href="fontawesome5/css/all.css" rel="stylesheet">
-
 <link href="style.css" rel="stylesheet">
 
 <body>
-
     <div id="editor">
         <aside>
             <ul id="editTools" :style="toolbarStyle">
                 <li v-for="tool in visibleEditTools" v-if="tool.show">
                     <span class="tooltip">{{tool.text}}</span>
-                    <i class="fas" :class="tool.icon" @click="useTool(tool)"></i>
+                    <img :src="tool.icon" class="icon" click="useTool(tool)">
                 </li>
             </ul>
         </aside>
@@ -27,7 +24,7 @@
             <div id="addTools">
                 <ul>
                     <li v-for="tool in addTools" @mouseover="hover(tool.text)" @click="addBlock(tool.type)">
-                        <i class="fas" :class="tool.icon" ></i>
+                        <img :src="tool.icon" class="icon">
                     </li>
                 </ul>
                 <span class="tooltip">{{addTooltip}}</span>
@@ -387,56 +384,56 @@ var app = new Vue({
         ],
         editTools: [
             {
-                icon: "fa-angle-up",
+                icon: "svg/angle-up.svg",
                 text: "move up",
                 show: true
             },
             {
-                icon: "fa-edit",
+                icon: "svg/edit.svg",
                 text: "edit",
                 show: true,
                 filter: function() {return !this.editing;}
             },
             {
-                icon: "fa-check",
+                icon: "svg/check.svg",
                 text: "save",
                 show: true,
                 filter: function() {return this.editing;}
             },
             {
-                icon: "fa-wrench",
+                icon: "svg/wrench.svg",
                 text: "change",
                 show: false
             },
             {
-                icon: "fa-trash-alt",
+                icon: "svg/trash-alt.svg",
                 text: "delete",
                 show: true
             },
             {
-                icon: "fa-angle-down",
+                icon: "svg/angle-down.svg",
                 text: "move down",
                 show: true
             },
         ],
         addTools: [
             {
-                icon: "fa-heading",
+                icon: "svg/heading.svg",
                 text: "Add heading",
                 type: "h2"
             },
             {
-                icon: "fa-paragraph",
+                icon: "svg/paragraph.svg",
                 text: "Add paragraph",
                 type: "p"
             },
             {
-                icon: "fa-image",
+                icon: "svg/image.svg",
                 text: "Add image",
                 type: "img"
             },
             {
-                icon: "fa-quote-right",
+                icon: "svg/quote-right.svg",
                 text: "Add block quote",
                 type: "blockquote"
             }

@@ -65,7 +65,7 @@ textarea {
     margin-right: calc(2*var(--base-line-height));
     float:left;
 }
-img {
+.image>img {
     width: 100%;
 }
 @media (max-width: 560px){
@@ -146,8 +146,11 @@ h1 {
     font-size: calc(2*var(--modal-scale));
 }
 
-i:hover {
-    color: red;
+.icon {
+    height: var(--base-line-height);
+}
+.icon:hover {
+    filter: invert(18%) sepia(99%) saturate(6314%) hue-rotate(1deg) brightness(103%) contrast(121%);
 }
 
 ul {
@@ -172,9 +175,8 @@ ul li {
 #editTools>li {
     cursor: pointer;
 }
-#editTools>li>i {
+#editTools>li>.icon {
     width: 1em;
-    text-align: center;
     vertical-align: middle;
 }
 #editTools>li:hover>.tooltip {
@@ -183,9 +185,6 @@ ul li {
 
 #addTools {
     display: inline-block;
-}
-#addTools>ul {
-    font-size: var(--modal-scale);
 }
 #addTools li {
     display: inline-block;

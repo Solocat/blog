@@ -271,56 +271,56 @@ var app = new Vue({
         ],
         editTools: [
             {
-                icon: "fa-angle-up",
+                icon: "svg/angle-up.svg",
                 text: "move up",
                 show: true
             },
             {
-                icon: "fa-edit",
+                icon: "svg/edit.svg",
                 text: "edit",
                 show: true,
                 filter: function() {return !this.editing;}
             },
             {
-                icon: "fa-check",
+                icon: "svg/check.svg",
                 text: "save",
                 show: true,
                 filter: function() {return this.editing;}
             },
             {
-                icon: "fa-wrench",
+                icon: "svg/wrench.svg",
                 text: "change",
                 show: false
             },
             {
-                icon: "fa-trash-alt",
+                icon: "svg/trash-alt.svg",
                 text: "delete",
                 show: true
             },
             {
-                icon: "fa-angle-down",
+                icon: "svg/angle-down.svg",
                 text: "move down",
                 show: true
             },
         ],
         addTools: [
             {
-                icon: "fa-heading",
+                icon: "svg/heading.svg",
                 text: "Add heading",
                 type: "h2"
             },
             {
-                icon: "fa-paragraph",
+                icon: "svg/paragraph.svg",
                 text: "Add paragraph",
                 type: "p"
             },
             {
-                icon: "fa-image",
+                icon: "svg/image.svg",
                 text: "Add image",
                 type: "img"
             },
             {
-                icon: "fa-quote-right",
+                icon: "svg/quote-right.svg",
                 text: "Add block quote",
                 type: "blockquote"
             }
