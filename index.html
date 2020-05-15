@@ -1,59 +1,72 @@
-<link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,600,600i,700,700i&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Hind:300,400,600,700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Basic:ital@1&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
-
-<link href="style.css" rel="stylesheet">
 
 <body>
-    <div id="editor">
-        <aside>
-            <ul id="editTools" :style="toolbarStyle">
-                <li v-for="tool in visibleEditTools" v-if="tool.show">
-                    <span class="tooltip">{{tool.text}}</span>
-                    <img :src="tool.icon" class="icon" @click="useTool(tool)">
-                </li>
-            </ul>
-        </aside>
+<div id="postlist">
+    <ul>
+        <li v-for="post in posts">{{post.title}}</li>
+    </ul>
+</div>
 
-        <article>
-            <s-block v-for="(block, index) in blocks" :item="block" :editing="blockIsEditing(index)" :key="index" @click="selectBlock(index)" :class="{selected: index == selectedIndex}"></s-block>
+<router-link to="/foo">Go to Foo</router-link>
+<router-link to="/bar">Go to Bar</router-link>
 
-            <div id="addTools">
-                <ul>
-                    <li v-for="tool in addTools" @mouseover="hover(tool.text)" @click="addBlock(tool.type)">
-                        <img :src="tool.icon" class="icon">
-                    </li>
-                </ul>
-                <span class="tooltip">{{addTooltip}}</span>
-            </div>
-        </article>
-    </div>
-
-</body>
+<router-view></router-view>
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 
-<script type="text/x-template" id="s-block-template">
-    <component :is="blocktype" :item="this.item" :editing="this.editing" class="s-block" :class="{editing: this.editing}" @click="onClick" @input="onInput" />
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyCD6i_bVMiThtY9IvVIaVtUxQwU9I_ioL4",
+    authDomain: "blog-bee9e.firebaseapp.com",
+    databaseURL: "https://blog-bee9e.firebaseio.com",
+    projectId: "blog-bee9e",
+    storageBucket: "blog-bee9e.appspot.com",
+    messagingSenderId: "89370705170",
+    appId: "1:89370705170:web:1c308df99ea1a2b57e07cb"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+
+
+const Foo = { template: '<div>foo</div>' }
+const Bar = { template: '<div>bar</div>' }
+
+const routes = [
+    { path: '/foo', component: Foo },
+    { path: '/bar', component: Bar }
+]
+
+const router = new VueRouter({
+    routes // short for `routes: routes`
+})
+
+
+var app = new Vue({
+    router: router,
+        el: "#postlist",
+        data: {
+            posts: []
+        },
+        created() {
+            const vm = this;
+
+            var postRef = firebase.database().ref("posts");
+            var posts = postRef.once('value', function(x) {
+                posts = x.val();
+                console.log(x.val());
+                vm.posts.push(x.val()[0]);
+            });
+        }
+    });
+
 </script>
-
-<script type="text/x-template" id="s-quote-template">
-    <blockquote @click="onClick">
-        <s-text :item="{type: 'header', content: this.item.content}" :editing="this.editing" @input="onInput" />
-        <s-text :item="{type: 'footer', content: this.item.footer}" :editing="this.editing" @input="onInputFooter" />
-    </blockquote>
-</script>
-
-<script type="text/x-template" id="s-image-template">
-    <div class="image" @click="onClick">
-        <img :src="this.item.content" />
-        <input v-show="this.editing" type="file" accept="image/*" @input="onInput" />
-    </div>
-</script>
-
-<script src="components.js"></script>
-
-<script src="app.js"></script>
+</body>
