@@ -13,7 +13,7 @@
             <ul id="editTools" :style="toolbarStyle">
                 <li v-for="tool in visibleEditTools" v-if="tool.show">
                     <span class="tooltip">{{tool.text}}</span>
-                    <img :src="tool.icon" class="icon" click="useTool(tool)">
+                    <img :src="tool.icon" class="icon" @click="useTool(tool)">
                 </li>
             </ul>
         </aside>
