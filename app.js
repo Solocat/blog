@@ -1,136 +1,3 @@
-var vText = {
-    props: ['item', 'editing'],
-    render(createElement) {
-        var data = {};
-        var type = this.item.type;
-
-        data = {
-            on: {
-                click: this.onClick
-            }
-        };
-        var child = [];
-        if (this.editing == true) {
-            child.push(createElement("textarea", {
-                domProps: {
-                    innerHTML: this.item.content
-                },
-                attrs: {
-                    rows: this.rows(),
-                    placeholder: "Write here"
-                },
-                on: {
-                    input: this.onInput,
-                    keydown: this.onKeydown
-                }
-            }));
-        }
-        else if (!this.item.content) return null;
-        else {
-            data.domProps = {
-                innerHTML: this.item.content
-            };
-
-        }
-
-        return createElement(type, data, child);
-    },
-    methods: {
-        rows() {
-            var el;
-
-            if (!this.$el) return 1; //new block on the block
-            else if (!this.$el.children || !this.$el.children[0]) {
-                el = this.$el;
-            }
-            else {
-                el = this.$el.children[0];
-            }
-
-            var computed = window.getComputedStyle(el);
-            var lh = parseInt(computed.getPropertyValue('line-height'));
-            var rows = parseInt(el.scrollHeight / lh);
-
-            return rows;
-        },
-        onInput(event) {
-            this.$emit('input', event.target.value);
-            //this.$emit('update:text', event.target.value);
-        },
-        onClick() {
-            this.$emit('click');
-        },
-        onKeydown(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-            }
-        }
-    }
-}
-
-var vQuote = {
-    props: ['item', 'editing'],
-    template: '#v-quote-template',
-    methods: {
-        onClick(){
-            this.$emit('click');
-        },
-        onInput(value) {
-            this.item.content = value;
-        },
-        onInputFooter(value) {
-            this.item.footer = value;
-        }
-    },
-    components: {
-        "v-text" : vText
-    }
-}
-
-var vImage = {
-    props: ['item', 'editing'],
-    template: '#v-image-template',
-    methods: {
-        onInput(event) {
-            var file = event.target.value.split('\\').pop();
-            this.$emit('input', file);
-        },
-        onClick() {
-            this.$emit('click');
-        }
-    }
-}
-
-var vBlock = {
-    template: '#v-block-template',
-    props: ['item', 'editing'],
-    components: {
-        "v-quote": vQuote,
-        "v-text": vText,
-        "v-image": vImage
-    },
-    computed: {
-        blocktype() {
-            if (this.item.type == "img") {
-                return "v-image"
-            }
-            else if (this.item.type == "blockquote") {
-                return "v-quote";
-            }
-            else {
-                return "v-text";
-            }
-        }
-    },
-    methods: {
-        onClick() {
-            this.$emit('click')
-        },
-        onInput(value) {
-            this.item.content = value;
-        }
-    }
-}
 
 Array.prototype.move = function(from, to) {
     this.splice(to, 0, this.splice(from, 1)[0]);
@@ -143,6 +10,8 @@ var app = new Vue({
             return (this.editing == true && i == this.selectedIndex);
         },
         addBlock(t) {
+            this.unselect();
+
             this.blocks.push({
                 type: t,
                 content: ""
@@ -156,6 +25,7 @@ var app = new Vue({
         },
         selectBlock(i) {
             if (this.selectedIndex == i) return;
+            this.unselect();
 
             this.editing = false;
             this.selectedIndex = i;
@@ -163,21 +33,22 @@ var app = new Vue({
             var element = document.getElementsByTagName("article")[0].children[i];
             var middle = element.offsetTop + element.offsetHeight/2;
 
-            var toolbar = document.getElementById("tools");
+            var toolbar = document.getElementById("editTools");
             toolbar.style.top = element.offsetTop;
         },
         unselect() {
+            if (this.selectedIndex < 0 ) return;
+            if (this.selectedBlock && !this.selectedBlock.content) this.deleteBlock(this.selectedIndex);
+
             this.selectedIndex = -1;
             this.editing = false;
-            var toolbar = document.getElementById("tools");
-            //toolbar.style.visibility = "hidden";
         },
         hover(text) {
             this.addTooltip = text
         },
         useTool(tool) {
             if (tool.text == "delete") {
-                this.blocks.splice(this.selectedIndex, 1);
+                this.deleteBlock(this.selectedIndex);
                 this.unselect();
             }
             else if (tool.text == "move up" && this.selectedIndex > 0) {
@@ -189,11 +60,10 @@ var app = new Vue({
                 this.selectBlock(this.selectedIndex+1);
             }
             else if (tool.text == "edit") {
-                var el = document.getElementsByClassName("v-block")[this.selectedIndex];
+                var el = document.getElementsByClassName("s-block")[this.selectedIndex];
                 this.editing = true;
             }
             else if (tool.text == "save") {
-                if (!this.selectedBlock.content) this.blocks.splice(this.selectedIndex, 1);
                 this.unselect();
             }
         }
@@ -249,7 +119,7 @@ var app = new Vue({
             },
             {
                 type: "img",
-                content: "../images/q3kl2jtzr9f21.jpg"
+                content: "q3kl2jtzr9f21.jpg"
             },
             {
                 type: "p",
@@ -327,6 +197,6 @@ var app = new Vue({
         ]
     },
     components: {
-        "v-block" : vBlock
+        "s-block" : sBlock
     }
 })
