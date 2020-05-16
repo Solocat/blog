@@ -14,8 +14,6 @@
 <div id="postlist">
 
     <router-link to="/"> Post List </router-link>
-    <router-link to="/about"> About </router-link>
-    <router-link to="/contact"> Contact </router-link>
 
     <router-view></router-view>
 </div>
@@ -45,97 +43,6 @@
 </script>
 
 <script src="components.js"></script>
-
-<script src="editor.js"></script>
-
-<script>
-// Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyCD6i_bVMiThtY9IvVIaVtUxQwU9I_ioL4",
-    authDomain: "blog-bee9e.firebaseapp.com",
-    databaseURL: "https://blog-bee9e.firebaseio.com",
-    projectId: "blog-bee9e",
-    storageBucket: "blog-bee9e.appspot.com",
-    messagingSenderId: "89370705170",
-    appId: "1:89370705170:web:1c308df99ea1a2b57e07cb"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-var PostList = {
-	template: `<ul>
-        <li v-for="(post,index) in posts">
-            <router-link :to="postPath(index)"> {{ post.title }} </router-link>
-            <router-link to="edit.html">edit</router-link>
-        </li>
-    </ul>`,
-    data: function() {
-        return {
-            posts: []
-        }
-    },
-    methods: {
-            postPath(id) {
-                return "post/" + id;
-            }
-        },
-    async created() {
-            const vm = this;
-
-            var postRef = firebase.database().ref("posts");
-            this.posts = (await postRef.once('value')).val();
-        }
-
-};
-
-var About = {
-	template: "<div><h1>About</h1><p>This is about page</p></div>"
-};
-
-var Contact = {
-	template: "<div><h1>Contact</h1><p>This is contact page</p></div>"
-};
-
-
-/*var Post = {
-    props: ['post'],
-    template: '<div>{{post.title}}</div>'
-}*/
-
-
-
-var routes = [
-    { path: '/', component: PostList },
-    { path: '/about', component: About },
-    { path: '/contact', component: Contact },
-    { path: '/post/:id', component: sArticle },
-    { path: '/post/:id/edit', component: Editor }
-];
-
-var router = new VueRouter({
-    routes: routes,
-    //mode: 'history',
-    base: '/'
-});
-
-var app = new Vue({
-    el: "#postlist",
-    router: router,
-    data: {
-        posts: []
-    },
-    methods: {
-        postPath(id) {
-            return "post/" + id;
-        }
-    },
-    async created() {
-        const vm = this;
-
-        var postRef = firebase.database().ref("posts");
-        this.posts = (await postRef.once('value')).val();
-    }
-});
-
-</script>
+<script src="pages.js"></script>
+<script src="app.js"></script>
 </body>

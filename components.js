@@ -45,7 +45,6 @@ props: ['item', 'editing'],
 render(createElement) {
     var data = {};
     var type = this.item.type;
-
     data = {
         on: {
             click: this.onClick
@@ -182,4 +181,124 @@ methods: {
         this.item.content = value;
     }
 }
+}
+
+var editTools = {
+    template: `<aside>
+        <ul id="editTools" :style="visibility">
+            <li v-for="tool in tools" v-if="tool.show">
+                <span class="tooltip">{{tool.text}}</span>
+                <img :src="tool.icon" class="icon" @click="useTool(tool)">
+            </li>
+        </ul>
+    </aside>`,
+    props: ["visible", "editing"],
+    computed: {
+        visibleEditTools() { //TODO
+            var excluded = [];
+            if (this.editing) excluded.push("edit");
+            else excluded.push("save");
+
+            if (this.selectedIndex <= 0) excluded.push("move up");
+            else if (this.selectedIndex >= this.post.blocks.length - 1) excluded.push("move down");
+
+            var tools = tools.filter(tool => {
+                return !excluded.includes(tool.text);
+            })
+
+            return tools;
+        },
+        visibility() {
+            return this.visible ? null : { visibility: "hidden" };
+        }
+    },
+    methods: {
+        useTool(tool) {
+            this.$emit("useTool", tool.text);
+        }
+    },
+    data: function() {
+        return {
+            tools: [
+                {
+                    icon: "svg/angle-up.svg",
+                    text: "move up",
+                    show: true
+                },
+                {
+                    icon: "svg/edit.svg",
+                    text: "edit",
+                    show: true,
+                    filter: function() {return !this.editing;}
+                },
+                {
+                    icon: "svg/check.svg",
+                    text: "save",
+                    show: true,
+                    filter: function() {return this.editing;}
+                },
+                {
+                    icon: "svg/wrench.svg",
+                    text: "change",
+                    show: false
+                },
+                {
+                    icon: "svg/trash-alt.svg",
+                    text: "delete",
+                    show: true
+                },
+                {
+                    icon: "svg/angle-down.svg",
+                    text: "move down",
+                    show: true
+                },
+            ]
+        }
+    }
+}
+
+var addTools = {
+    template: `<div id="addTools">
+        <ul>
+            <li v-for="tool in addTools" @mouseover="hover(tool.text)" @click="useTool(tool)">
+                <img :src="tool.icon" class="icon">
+            </li>
+        </ul>
+        <span class="tooltip">{{addTooltip}}</span>
+    </div>`,
+    methods: {
+        hover(text) {
+            this.addTooltip = text
+        },
+        useTool(tool) {
+            this.$emit("useTool", tool.type);
+        }
+    },
+    data: function() {
+        return {
+            addTooltip: "tooltip",
+            addTools: [
+                {
+                    icon: "svg/heading.svg",
+                    text: "Add heading",
+                    type: "h2"
+                },
+                {
+                    icon: "svg/paragraph.svg",
+                    text: "Add paragraph",
+                    type: "p"
+                },
+                {
+                    icon: "svg/image.svg",
+                    text: "Add image",
+                    type: "img"
+                },
+                {
+                    icon: "svg/quote-right.svg",
+                    text: "Add block quote",
+                    type: "blockquote"
+                }
+            ]
+        }
+    }
 }
