@@ -27,40 +27,24 @@ var sPostList = {
 
 };
 
-var articleMix = {
+var sArticle = {
+    template: `<article>
+            <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
+            <router-link :to="editPath">Edit</router-link>
+        </article>`,
     async created() {
         var postRef = firebase.database().ref("posts/").child('0');
         this.post = (await postRef.once('value')).val();
     },
     data() {
         return {
-            post: {}
-        }
-    },
-    components: {
-        "s-block" : sBlock
-    },
-}
-
-var sArticle = {
-    mixins: [articleMix],
-    template: `<article>
-            <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
-            <router-link :to="editPath">Edit</router-link>
-        </article>`,
-    data: function() {
-        return {
-            //post: {},
+            post: {},
             editPath: "/post/" + this.$route.params.id + "/edit"
         }
-    }/*,
+    },
     components: {
         "s-block" : sBlock
-    },
-    async created() {
-        var postRef = firebase.database().ref("posts/").child('0');
-        this.post = (await postRef.once('value')).val();
-    }*/
+    }
 }
 
 Array.prototype.move = function(from, to) {
@@ -68,8 +52,8 @@ Array.prototype.move = function(from, to) {
 };
 
 var sEditor = {
-    mixins: [articleMix],
-    template: `<div id="editor">{{post.title}}
+    mixins: [sArticle], //inherit from article
+    template: `<div id="editor">
         <edit-tools @useTool="useTool" :visible="selectedIndex >= 0" :editing="editing"></edit-tools>
         <main>
             <article>

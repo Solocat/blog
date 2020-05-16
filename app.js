@@ -11,33 +11,15 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-var routes = [
-    { path: '/', component: sPostList },
-    { path: '/post/:id', component: sArticle },
-    { path: '/post/:id/edit', component: sEditor }
-];
-
-var router = new VueRouter({
-    routes: routes,
-    //mode: 'history',
-    base: '/'
-});
-
 var app = new Vue({
-    el: "#postlist",
-    router: router,
-    data: {
-        posts: []
-    },
-    methods: {
-        postPath(id) {
-            return "post/" + id;
-        }
-    },
-    async created() {
-        const vm = this;
-
-        var postRef = firebase.database().ref("posts");
-        this.posts = (await postRef.once('value')).val();
-    }
+    el: "#app",
+    router: new VueRouter({
+        routes: [
+            { path: '/', component: sPostList },
+            { path: '/post/:id', component: sArticle },
+            { path: '/post/:id/edit', component: sEditor }
+        ],
+        //mode: 'history',
+        base: '/'
+    })
 });
