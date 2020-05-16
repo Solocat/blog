@@ -14,8 +14,8 @@
 <div id="postlist">
 
     <router-link to="/"> Post List </router-link>
-    <router-link to="about"> About </router-link>
-    <router-link to="contact"> Contact </router-link>
+    <router-link to="/about"> About </router-link>
+    <router-link to="/contact"> Contact </router-link>
 
     <router-view></router-view>
 </div>
@@ -68,7 +68,6 @@ var PostList = {
             <router-link :to="postPath(index)"> {{ post.title }} </router-link>
             <router-link to="edit.html">edit</router-link>
         </li>
-
     </ul>`,
     data: function() {
         return {

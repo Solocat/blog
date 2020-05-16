@@ -33,17 +33,17 @@ article{
   #DEF var(--base-line-height) calc(2*var(--base-line-height)));
 }
 
-.v-block {
+.s-block {
     margin-bottom:var(--base-line-height);
 }
-.v-block.selected {
+.s-block.selected {
     background-color: #FEDA;
     box-shadow: 0px 0px 0px 4px #5AF;
 }
-.v-block:hover {
+.s-block:hover {
     background-color: #FEDA;
 }
-.v-block textarea {
+.s-block textarea {
     box-shadow: 0px 0px 0px 4px red;
 }
 

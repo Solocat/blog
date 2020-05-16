@@ -5,14 +5,13 @@ Array.prototype.move = function(from, to) {
 var sArticle = {
     template: `<article>
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
-            <p>{{$route.params.id}}</p>
-
-            <router-link to="0/edit"> Contact </router-link>
-            <a href="edit.html">Edit post</a>
+            <router-link :to="editPath">Edit</router-link>
+            <!--<a href="edit.html">Edit post</a>-->
         </article>`,
     data: function() {
         return {
-            post: {}
+            post: {},
+            editPath: "/post/" + this.$route.params.id + "/edit"
         }
     },
     components: {
@@ -20,34 +19,138 @@ var sArticle = {
     },
     async created() {
         var postRef = firebase.database().ref("posts/").child('0');
-            this.post = (await postRef.once('value')).val();
+        this.post = (await postRef.once('value')).val();
+    }
+}
+
+var editTools = {
+    template: `<aside>
+        <ul id="editTools" :style="visibility">
+            <li v-for="tool in tools" v-if="tool.show">
+                <span class="tooltip">{{tool.text}}</span>
+                <img :src="tool.icon" class="icon" @click="useTool(tool)">
+            </li>
+        </ul>
+    </aside>`,
+    props: ["visible", "editing"],
+    computed: {
+        visibleEditTools() { //TODO
+            var excluded = [];
+            if (this.editing) excluded.push("edit");
+            else excluded.push("save");
+
+            if (this.selectedIndex <= 0) excluded.push("move up");
+            else if (this.selectedIndex >= this.post.blocks.length - 1) excluded.push("move down");
+
+            var tools = tools.filter(tool => {
+                return !excluded.includes(tool.text);
+            })
+
+            return tools;
+        },
+        visibility() {
+            return this.visible ? null : { visibility: "hidden" };
+        }
+    },
+    methods: {
+        useTool(tool) {
+            this.$emit("useTool", tool.text);
+        }
+    },
+    data: function() {
+        return {
+            tools: [
+                {
+                    icon: "svg/angle-up.svg",
+                    text: "move up",
+                    show: true
+                },
+                {
+                    icon: "svg/edit.svg",
+                    text: "edit",
+                    show: true,
+                    filter: function() {return !this.editing;}
+                },
+                {
+                    icon: "svg/check.svg",
+                    text: "save",
+                    show: true,
+                    filter: function() {return this.editing;}
+                },
+                {
+                    icon: "svg/wrench.svg",
+                    text: "change",
+                    show: false
+                },
+                {
+                    icon: "svg/trash-alt.svg",
+                    text: "delete",
+                    show: true
+                },
+                {
+                    icon: "svg/angle-down.svg",
+                    text: "move down",
+                    show: true
+                },
+            ]
+        }
+    }
+}
+
+var addTools = {
+    template: `<div id="addTools">
+        <ul>
+            <li v-for="tool in addTools" @mouseover="hover(tool.text)" @click="useTool(tool.type)">
+                <img :src="tool.icon" class="icon">
+            </li>
+        </ul>
+        <span class="tooltip">{{addTooltip}}</span>
+    </div>`,
+    methods: {
+        hover(text) {
+            this.addTooltip = text
+        },
+        useTool(tool) {
+            this.$emit("useTool", tool.type);
+        }
+    },
+    data: function() {
+        return {
+            addTooltip: "tooltip",
+            addTools: [
+                {
+                    icon: "svg/heading.svg",
+                    text: "Add heading",
+                    type: "h2"
+                },
+                {
+                    icon: "svg/paragraph.svg",
+                    text: "Add paragraph",
+                    type: "p"
+                },
+                {
+                    icon: "svg/image.svg",
+                    text: "Add image",
+                    type: "img"
+                },
+                {
+                    icon: "svg/quote-right.svg",
+                    text: "Add block quote",
+                    type: "blockquote"
+                }
+            ]
+        }
     }
 }
 
 var Editor = {
     template: `<div id="editor">
-        <aside>
-            <ul id="editTools" :style="toolbarStyle">
-                <li v-for="tool in visibleEditTools" v-if="tool.show">
-                    <span class="tooltip">{{tool.text}}</span>
-                    <img :src="tool.icon" class="icon" @click="useTool(tool)">
-                </li>
-            </ul>
-        </aside>
+        <edit-tools @useTool="useTool" :visible="selectedIndex >= 0" :editing="editing"></edit-tools>
         <main>
             <article>
                 <s-block v-for="(block, index) in post.blocks" :item="block" :editing="blockIsEditing(index)" :key="index" @click="selectBlock(index)" :class="{selected: index == selectedIndex}"></s-block>
-
-
             </article>
-            <div id="addTools">
-                <ul>
-                    <li v-for="tool in addTools" @mouseover="hover(tool.text)" @click="addBlock(tool.type)">
-                        <img :src="tool.icon" class="icon">
-                    </li>
-                </ul>
-                <span class="tooltip">{{addTooltip}}</span>
-            </div>
+            <add-tools @useTool="addBlock"></add-tools>
         </main>
     </div>`,
     async created() {
@@ -79,6 +182,12 @@ var Editor = {
             this.editing = false;
             this.selectedIndex = i;
 
+            //it's a block, but not in the dom yet
+            Vue.nextTick()
+            .then(function () {
+                console.log(document.getElementsByTagName("article")[0].children);
+            })
+
             var element = document.getElementsByTagName("article")[0].children[i];
             var middle = element.offsetTop + element.offsetHeight/2;
 
@@ -92,61 +201,32 @@ var Editor = {
             this.selectedIndex = -1;
             this.editing = false;
         },
-        hover(text) {
-            this.addTooltip = text
-        },
+
         useTool(tool) {
-            if (tool.text == "delete") {
+            if (tool == "delete") {
                 this.deleteBlock(this.selectedIndex);
                 this.unselect();
             }
-            else if (tool.text == "move up" && this.selectedIndex > 0) {
+            else if (tool == "move up" && this.selectedIndex > 0) {
                 this.post.blocks.move(this.selectedIndex, this.selectedIndex-1);
                 this.selectBlock(this.selectedIndex-1);
             }
-            else if (tool.text == "move down" && this.selectedIndex < this.post.blocks.length - 1) {
+            else if (tool == "move down" && this.selectedIndex < this.post.blocks.length - 1) {
                 this.post.blocks.move(this.selectedIndex, this.selectedIndex+1);
                 this.selectBlock(this.selectedIndex+1);
             }
-            else if (tool.text == "edit") {
+            else if (tool == "edit") {
                 var el = document.getElementsByClassName("s-block")[this.selectedIndex];
                 this.editing = true;
             }
-            else if (tool.text == "save") {
+            else if (tool == "save") {
                 this.unselect();
             }
         }
-        /*filter(tool) {
-            if (tool.filter) return tool.filter();
-            else return true;
-        }
-        visibleEditTools() {
-            return this.editTools.filter(function (tool) {
-                if (!tool.filter) return true;
-                else return tool.filter()
-            });
-        }*/
     },
     computed: {
         selectedBlock() {
             return this.post.blocks[this.selectedIndex];
-        },
-        toolbarStyle() {
-            return (this.selectedIndex < 0) ? { visibility: "hidden" } : null;
-        },
-        visibleEditTools() {
-            var excluded = [];
-            if (this.editing) excluded.push("edit");
-            else excluded.push("save");
-
-            if (this.selectedIndex <= 0) excluded.push("move up");
-            else if (this.selectedIndex >= this.post.blocks.length - 1) excluded.push("move down");
-
-            var tools = this.editTools.filter(tool => {
-                return !excluded.includes(tool.text);
-            })
-
-            return tools;
         }
     },
     data() {
@@ -154,67 +234,12 @@ var Editor = {
 
         post: {},
         editing: false,
-        selectedIndex: -1,
-        addTooltip: "tooltip",
-        editTools: [
-            {
-                icon: "svg/angle-up.svg",
-                text: "move up",
-                show: true
-            },
-            {
-                icon: "svg/edit.svg",
-                text: "edit",
-                show: true,
-                filter: function() {return !this.editing;}
-            },
-            {
-                icon: "svg/check.svg",
-                text: "save",
-                show: true,
-                filter: function() {return this.editing;}
-            },
-            {
-                icon: "svg/wrench.svg",
-                text: "change",
-                show: false
-            },
-            {
-                icon: "svg/trash-alt.svg",
-                text: "delete",
-                show: true
-            },
-            {
-                icon: "svg/angle-down.svg",
-                text: "move down",
-                show: true
-            },
-        ],
-        addTools: [
-            {
-                icon: "svg/heading.svg",
-                text: "Add heading",
-                type: "h2"
-            },
-            {
-                icon: "svg/paragraph.svg",
-                text: "Add paragraph",
-                type: "p"
-            },
-            {
-                icon: "svg/image.svg",
-                text: "Add image",
-                type: "img"
-            },
-            {
-                icon: "svg/quote-right.svg",
-                text: "Add block quote",
-                type: "blockquote"
-            }
-        ]
+        selectedIndex: -1
     }},
     components: {
         "s-block": sBlock,
-        "s-article": sArticle
+        "s-article": sArticle,
+        "edit-tools": editTools,
+        "add-tools": addTools
     }
 }
