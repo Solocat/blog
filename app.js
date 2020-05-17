@@ -16,8 +16,9 @@ var app = new Vue({
     router: new VueRouter({
         routes: [
             { path: '/', component: sPostList },
-            { path: '/post/:id', component: sArticle },
-            { path: '/post/:id/edit', component: sEditor }
+            { path: '/post/:id', component: sArticle, props: true },
+            { path: '/post/:id/edit', component: sEditor },
+            { path: '/new', component: sEditor}
         ],
         //mode: 'history',
         base: '/'

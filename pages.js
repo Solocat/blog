@@ -1,10 +1,13 @@
 var sPostList = {
-	template: `<ul>
+	template: `<div>
+	<router-link to="new">New post</router-link>
+	<ul>
         <li v-for="(post,index) in posts">
             <router-link :to="postPath(index)"> {{ post.title }} </router-link>
             <router-link :to="postEditPath(index)">edit</router-link>
         </li>
-    </ul>`,
+    </ul>
+	</div>`,
     data: function() {
         return {
             posts: []
@@ -32,13 +35,16 @@ var sArticle = {
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
             <router-link :to="editPath">Edit</router-link>
         </article>`,
+	//props: ['post'],
     async created() {
-        var postRef = firebase.database().ref("posts/").child('0');
-        this.post = (await postRef.once('value')).val();
+		if (this.$route.params.id) {
+			var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
+	        this.post = (await postRef.once('value')).val();
+		}
     },
     data() {
         return {
-            post: {},
+            post: { blocks: [] },
             editPath: "/post/" + this.$route.params.id + "/edit"
         }
     },
@@ -56,6 +62,8 @@ var sEditor = {
     template: `<div id="editor">
         <edit-tools @useTool="useTool" :visible="selectedIndex >= 0" :editing="editing"></edit-tools>
         <main>
+			<button @click="upload">Save post</button>
+			<button @click="clear">Clear post</button>
             <article>
                 <s-block v-for="(block, index) in post.blocks" :item="block" :editing="blockIsEditing(index)" :key="index" @click="selectBlock(index, false)" :class="{selected: index == selectedIndex}"></s-block>
             </article>
@@ -63,6 +71,22 @@ var sEditor = {
         </main>
     </div>`,
     methods: {
+		upload() {
+			if (this.$route.params.id) {
+				update();
+			}
+			else {
+				var postRef = firebase.database().ref("posts/").push();
+				postRef.set(this.post);
+			}
+		},
+		update() {
+			var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
+			postRef.set(this.post);
+		},
+		clear() {
+			this.post = {};
+		},
         blockIsEditing(i) {
             return (this.editing == true && i == this.selectedIndex);
         },

@@ -40,7 +40,7 @@ article{
     background-color: #FEDA;
     box-shadow: 0px 0px 0px 4px #5AF;
 }
-.s-block:hover {
+#editor .s-block:hover {
     background-color: #FEDA;
 }
 .s-block textarea {
