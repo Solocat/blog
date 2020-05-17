@@ -72,19 +72,23 @@ var sEditor = {
     </div>`,
     methods: {
 		upload() {
+			this.unselect();
 			if (this.$route.params.id) {
-				update();
+				var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
 			}
 			else {
 				var postRef = firebase.database().ref("posts/").push();
-				postRef.set(this.post);
 			}
-		},
-		update() {
-			var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
-			postRef.set(this.post);
+			postRef.set(this.post, function(error) {
+			    if (error) {
+			      // The write failed...
+			    } else {
+			      console.log("Post saved!");
+			    }
+			  });
 		},
 		clear() {
+			this.unselect();
 			this.post = {};
 		},
         blockIsEditing(i) {
