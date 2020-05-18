@@ -3,8 +3,8 @@ var sPostList = {
 	<router-link to="new">New post</router-link>
 	<ul>
         <li v-for="(post,index) in posts">
-            <router-link :to="postPath(index)"> {{ post.title }} </router-link>
-            <router-link :to="postEditPath(index)">edit</router-link>
+            <router-link :to="{name: 'post', params: { postid:index, postdata: post } }"> {{ post.title }} </router-link>
+            <router-link :to="{name: 'edit', params: { postid:index, postdata: post } }" :post="post">edit</router-link>
         </li>
     </ul>
 	</div>`,
@@ -13,39 +13,31 @@ var sPostList = {
             posts: []
         }
     },
-    methods: {
-            postPath(id) {
-                return "post/" + id;
-            },
-            postEditPath(id) {
-                return "post/" + id + "/edit"
-            }
-        },
     async created() {
-            const vm = this;
+        const vm = this;
 
-            var postRef = firebase.database().ref("posts");
-            this.posts = (await postRef.once('value')).val();
-        }
+        var postRef = firebase.database().ref("posts");
+        this.posts = (await postRef.once('value')).val();
+    }
 
 };
 
 var sArticle = {
     template: `<article>
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
-            <router-link :to="editPath">Edit</router-link>
+            <router-link :to="{name: 'edit', params: { postid:$route.params.id, postdata: post } }">Edit</router-link>
         </article>`,
-	//props: ['post'],
+	props: ['postdata'],
     async created() {
-		if (this.$route.params.id) {
-			var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
-	        this.post = (await postRef.once('value')).val();
+		if (this.$route.params.postid) {
+			//var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
+	        //this.post = (await postRef.once('value')).val();
 		}
     },
     data() {
         return {
-            post: { blocks: [] },
-            editPath: "/post/" + this.$route.params.id + "/edit"
+            post: this.postdata,
+            editPath: "/post/" + this.$route.params.postid + "/edit"
         }
     },
     components: {
@@ -73,8 +65,8 @@ var sEditor = {
     methods: {
 		upload() {
 			this.unselect();
-			if (this.$route.params.id) {
-				var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
+			if (this.$route.params.postid) {
+				var postRef = firebase.database().ref("posts/").child(this.$route.params.postid);
 			}
 			else {
 				var postRef = firebase.database().ref("posts/").push();
