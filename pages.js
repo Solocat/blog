@@ -4,7 +4,7 @@ var sPostList = {
 	<ul>
         <li v-for="(post,index) in posts">
             <router-link :to="{name: 'post', params: { postid:index, postdata: post } }"> {{ post.title }} </router-link>
-            <router-link :to="{name: 'edit', params: { postid:index, postdata: post } }" :post="post">edit</router-link>
+            <router-link :to="{name: 'edit', params: { postid:index, postdata: post } }">edit</router-link>
         </li>
     </ul>
 	</div>`,
@@ -25,7 +25,7 @@ var sPostList = {
 var sArticle = {
     template: `<article>
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
-            <router-link :to="{name: 'edit', params: { postid:$route.params.id, postdata: post } }">Edit</router-link>
+            <router-link :to="{name: 'edit', params: { postid: $route.params.postid, postdata: post } }">Edit</router-link>
         </article>`,
 	props: ['postdata'],
     async created() {
@@ -52,7 +52,7 @@ Array.prototype.move = function(from, to) {
 var sEditor = {
     mixins: [sArticle], //inherit from article
     template: `<div id="editor">
-        <edit-tools @useTool="useTool" :visible="selectedIndex >= 0" :editing="editing"></edit-tools>
+        <edit-tools @useTool="useTool" :visible="selectedIndex >= 0" :editing="editing" :hiddenTools="hiddenEditTools()"></edit-tools>
         <main>
 			<button @click="upload">Save post</button>
 			<button @click="clear">Clear post</button>
@@ -63,6 +63,16 @@ var sEditor = {
         </main>
     </div>`,
     methods: {
+        hiddenEditTools() { //TODO
+            var excluded = [];
+            if (this.editing) excluded.push("edit");
+            else excluded.push("save");
+
+            if (this.selectedIndex <= 0) excluded.push("move up");
+            else if (this.selectedIndex >= this.post.blocks.length - 1) excluded.push("move down");
+
+            return excluded;
+        },
 		upload() {
 			this.unselect();
 			if (this.$route.params.postid) {
@@ -70,7 +80,10 @@ var sEditor = {
 			}
 			else {
 				var postRef = firebase.database().ref("posts/").push();
-			}
+            }
+            this.post.title = this.post.blocks[0].content;
+            this.post.time = "";
+            this.post.author = "me";
 			postRef.set(this.post, function(error) {
 			    if (error) {
 			      // The write failed...

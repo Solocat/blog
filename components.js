@@ -186,24 +186,17 @@ methods: {
 var editTools = {
     template: `<aside>
         <ul id="editTools" :style="visibility">
-            <li v-for="tool in tools" v-if="tool.show">
+            <li v-for="tool in visibleTools" v-if="tool.show">
                 <span class="tooltip">{{tool.text}}</span>
                 <img :src="tool.icon" class="icon" @click="useTool(tool)">
             </li>
         </ul>
     </aside>`,
-    props: ["visible", "editing"],
+    props: ["visible", "editing", "hiddenTools"],
     computed: {
-        visibleEditTools() { //TODO
-            var excluded = [];
-            if (this.editing) excluded.push("edit");
-            else excluded.push("save");
-
-            if (this.selectedIndex <= 0) excluded.push("move up");
-            else if (this.selectedIndex >= this.post.blocks.length - 1) excluded.push("move down");
-
-            var tools = tools.filter(tool => {
-                return !excluded.includes(tool.text);
+        visibleTools() { //TODO
+            var tools = this.tools.filter(tool => {
+                return !this.hiddenTools.includes(tool.text);
             })
 
             return tools;
