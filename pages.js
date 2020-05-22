@@ -1,6 +1,6 @@
 var sPostList = {
 	template: `<div>
-	<router-link to="new">New post</router-link>
+	<router-link :to="{ name: 'new'}">New post</router-link>
 	<ul>
         <li v-for="(post,index) in posts">
             <router-link :to="{name: 'post', params: { postid:index, postdata: post } }"> {{ post.title }} </router-link>
@@ -23,19 +23,23 @@ var sPostList = {
 };
 
 var sArticle = {
-    template: `<article>
+    template: `<div v-if="loading">Loading...</div>
+        <article v-else>
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
             <router-link :to="{name: 'edit', params: { postid: $route.params.postid, postdata: post } }">Edit</router-link>
         </article>`,
 	props: ['postdata'],
     async created() {
-		if (this.$route.params.postid) {
-			//var postRef = firebase.database().ref("posts/").child(this.$route.params.id);
-	        //this.post = (await postRef.once('value')).val();
+		if (!this.postdata && this.$route.params.postid) {
+            this.loading = true;
+			var postRef = firebase.database().ref("posts/").child(this.$route.params.postid);
+            this.post = (await postRef.once('value')).val();
+            this.loading = false;
 		}
     },
     data() {
         return {
+            loading: false,
             post: this.postdata,
             editPath: "/post/" + this.$route.params.postid + "/edit"
         }
@@ -51,7 +55,8 @@ Array.prototype.move = function(from, to) {
 
 var sEditor = {
     mixins: [sArticle], //inherit from article
-    template: `<div id="editor">
+    template: `<div v-if="loading">Loading...</div>
+    <div id="editor" v-else>
         <edit-tools @useTool="useTool" :visible="selectedIndex >= 0" :editing="editing" :hiddenTools="hiddenEditTools()"></edit-tools>
         <main>
 			<button @click="upload">Save post</button>
@@ -69,7 +74,7 @@ var sEditor = {
             else excluded.push("save");
 
             if (this.selectedIndex <= 0) excluded.push("move up");
-            else if (this.selectedIndex >= this.post.blocks.length - 1) excluded.push("move down");
+            if (this.selectedIndex >= this.post.blocks.length - 1) excluded.push("move down");
 
             return excluded;
         },

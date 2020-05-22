@@ -274,7 +274,7 @@ var addTools = {
                 {
                     icon: "svg/heading.svg",
                     text: "Add heading",
-                    type: "h2"
+                    type: "h3"
                 },
                 {
                     icon: "svg/paragraph.svg",

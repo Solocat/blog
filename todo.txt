@@ -1,4 +1,2 @@
-errors when reload an article: fetch article in this case
-edit tools filtering
-compulsory header
+compulsory header (edit tools filtering?)
 display author and time
