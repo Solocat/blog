@@ -25,6 +25,8 @@ var sPostList = {
 var sArticle = {
     template: `<div v-if="loading">Loading...</div>
         <article v-else>
+            <div>{{ new Date(post.time).toLocaleDateString() }}</div>
+            <div>{{ post.author }}</div>
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
             <router-link :to="{name: 'edit', params: { postid: $route.params.postid, postdata: post } }">Edit</router-link>
         </article>`,
@@ -68,7 +70,7 @@ var sEditor = {
         </main>
     </div>`,
     methods: {
-        hiddenEditTools() { //TODO
+        hiddenEditTools() {
             var excluded = [];
             if (this.editing) excluded.push("edit");
             else excluded.push("save");
@@ -87,7 +89,7 @@ var sEditor = {
 				var postRef = firebase.database().ref("posts/").push();
             }
             this.post.title = this.post.blocks[0].content;
-            this.post.time = "";
+            this.post.time = Date.now();
             this.post.author = "me";
 			postRef.set(this.post, function(error) {
 			    if (error) {
@@ -95,7 +97,7 @@ var sEditor = {
 			    } else {
 			      console.log("Post saved!");
 			    }
-			  });
+			});
 		},
 		clear() {
 			this.unselect();

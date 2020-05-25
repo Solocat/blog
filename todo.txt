@@ -1,2 +1,2 @@
 compulsory header (edit tools filtering?)
-display author and time
+is title a necessity?
