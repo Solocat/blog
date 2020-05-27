@@ -1,2 +1,13 @@
 compulsory header (edit tools filtering?)
 is title a necessity?
+
+content loading: only metadata in postlist?
+
+rethink route urls
+
+post needs:
+title
+abstract
+cover image
+time
+author

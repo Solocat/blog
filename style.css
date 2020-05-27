@@ -21,12 +21,14 @@ body {
 }
 #editor>aside {
     flex-shrink: 0;
+    margin-right: calc(var(--base-line-height));
 }
 
 
 article{
     max-width: calc(26*var(--base-line-height));
-    padding: calc(var(--base-line-height));
+    /*padding: calc(var(--base-line-height));*/
+    margin: auto;
 }
 #editor article:hover {
     background: repeating-linear-gradient(transparent 0 var(--base-line-height),
@@ -158,9 +160,6 @@ ul {
     margin: 0;
     padding: 0;
 }
-ul li {
-    cursor: pointer;
-}
 .tooltip {
     visibility: hidden;
 }
@@ -189,7 +188,99 @@ ul li {
 #addTools li {
     display: inline-block;
     margin-right: 0.3em;
+    cursor: pointer;
 }
 #addTools:hover .tooltip {
     visibility: visible;
+}
+
+
+a.button {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    background-color: #5555d8;
+    padding: calc(0.25*var(--base-line-height)) var(--base-line-height);
+    border: 0;
+    border-radius: var(--base-line-height);
+}
+
+:root {
+    --post-background: #333;
+}
+#postList {
+    margin: auto;
+    max-width: 1000px;
+}
+
+#postList li {
+    margin: var(--base-line-height) 0;
+}
+
+#postList article
+{
+    background-color: var(--post-background);
+    height: calc(12*var(--base-line-height));
+    position:relative;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "img text";
+    color: white;
+    border-radius: 1em;
+    overflow: hidden;
+    max-width: unset;
+    padding: 0;
+}
+
+#postList article>img
+{
+    grid-area: img;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+#postList article>h2
+{
+    grid-area: img;
+    position: absolute;
+    text-shadow: 0px 0px 4px black;
+    text-align: center;
+    align-self: center;
+    justify-self: center;
+}
+#postList article>aside {
+    grid-area: text;
+    margin: var(--base-line-height) var(--base-line-height) 0 var(--base-line-height);
+    overflow: hidden;
+}
+#postList article>.scrim {
+    grid-area: text;
+    background: linear-gradient(transparent 0%, transparent 60%, var(--post-background) 90%);
+}
+#postList article>a {
+    grid-area: text;
+    justify-self: center;
+    align-self: end;
+    margin: calc(0.5*var(--base-line-height));
+}
+
+@media only screen and (max-width: 600px) {
+    #postList article {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas:
+        "img";
+    }
+    #postList article>aside{
+        display: none;
+    }
+    #postList article>.scrim {
+        grid-area: img;
+        display: none;
+    }
+    #postList article>a {
+        grid-area: img;
+    }
 }

@@ -1,5 +1,20 @@
 var sPostList = {
-	template: `<div>
+    template: `
+    <div>
+        <router-link class="button" :to="{ name: 'new'}">New post</router-link>
+        <ul id="postList">
+            <li v-for="(post, index) in posts">
+            <article>
+                <img src="https://placeimg.com/400/300/any">
+                <h2>{{ post.title }}</h2>
+                <aside> {{ post.blocks[1].content }} </aside>
+                <div class="scrim"></div>
+                <router-link class="button" :to="{name: 'post', params: { postid:index, postdata: post } }">Read more</router-link>
+            </article>
+            </li>
+        </ul>
+    </div>`,
+	/*template: `<div>
 	<router-link :to="{ name: 'new'}">New post</router-link>
 	<ul>
         <li v-for="(post,index) in posts">
@@ -7,7 +22,7 @@ var sPostList = {
             <router-link :to="{name: 'edit', params: { postid:index, postdata: post } }">edit</router-link>
         </li>
     </ul>
-	</div>`,
+	</div>`,*/
     data: function() {
         return {
             posts: []
@@ -28,7 +43,7 @@ var sArticle = {
             <div>{{ new Date(post.time).toLocaleDateString() }}</div>
             <div>{{ post.author }}</div>
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
-            <router-link :to="{name: 'edit', params: { postid: $route.params.postid, postdata: post } }">Edit</router-link>
+            <router-link class="button" :to="{name: 'edit', params: { postid: $route.params.postid, postdata: post } }">Edit</router-link>
         </article>`,
 	props: ['postdata'],
     async created() {
