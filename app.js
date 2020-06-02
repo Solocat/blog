@@ -18,7 +18,8 @@ var app = new Vue({
             { path: '/', component: sPostList },
             { path: '/post/:postid', component: sArticle, name: 'post', props: true },
             { path: '/post/:postid/edit', component: sEditor, name: 'edit', props: true },
-            { path: '/post/new', component: sEditor, name: 'new', props: {postdata: {blocks: []}}}
+            { path: '/post/new', component: sEditor, name: 'new', props: {postdata: {blocks: []}}},
+            { path: '/404', alias: '*', component: NotFound }
         ],
         //mode: 'history',
         base: '/'

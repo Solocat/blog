@@ -1,3 +1,7 @@
+var NotFound = {
+    template: '<h1>404 Not Found</h1>'
+}
+
 var sPostList = {
     template: `
     <div>
@@ -40,10 +44,11 @@ var sPostList = {
 var sArticle = {
     template: `<div v-if="loading">Loading...</div>
         <article v-else>
+            <router-link class="button" :to="{name: 'edit', params: { postid: $route.params.postid, postdata: post } }">Edit</router-link>
             <div>{{ new Date(post.time).toLocaleDateString() }}</div>
             <div>{{ post.author }}</div>
             <s-block v-for="(block, index) in post.blocks" :item="block" ></s-block>
-            <router-link class="button" :to="{name: 'edit', params: { postid: $route.params.postid, postdata: post } }">Edit</router-link>
+            
         </article>`,
 	props: ['postdata'],
     async created() {

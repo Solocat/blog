@@ -195,15 +195,16 @@ ul {
 }
 
 
-a.button {
+button, a.button {
     display: inline-block;
     text-decoration: none;
     color: white;
-    text-align: center;
-    background-color: #5555d8;
+    background-color: #5b8;
     padding: calc(0.25*var(--base-line-height)) var(--base-line-height);
     border: 0;
     border-radius: var(--base-line-height);
+    cursor: pointer;
+    font: inherit;
 }
 
 :root {
@@ -244,7 +245,7 @@ a.button {
 #postList article>h2
 {
     grid-area: img;
-    position: absolute;
+    margin: 0;
     text-shadow: 0px 0px 4px black;
     text-align: center;
     align-self: center;
