@@ -1,0 +1,27 @@
+Imagine a primitive society, a tribe, whose primary source of sustenance is agriculture. In this society, each person may freely find a plot of land to cultivate, either with their own hands or with the help of their family. The farmers use the produce to feed their families, and may use any surplus to share with others and receive their products in return. There is more than enough land for everyone, and if a plot is in use, one will simply travel a little ways to find unused land in which to build a home and a farm.
+
+A man has farmed his land for years. One day, a traveler appears and props up a sign on the farmer's land. The illiterate farmer inquires the traveler of his intents, to which he replies:
+-Are you aware that this land is in fact my property?
+-..What the hell is property?
+-It's a new thing. It means that I own it, it's mine.
+-But clearly you can see that it's not, I am the one who lives here and works the land.
+-Indeed it seems you are currently exploiting my property. But since I have claimed it as mine, only I am allowed to use it, and I may use it as I wish. And I wish to make a deal.
+The traveler has struck the farmer speechless.
+-I will gladly allow you to live here and continue working as you always have. In return of this favor, I only ask for a third of all your produce. If this does not please you, I must ask you to leave my property.
+-I won't accept, and I won't leave. Find your own place.
+The traveler sighs. -Then I will have to force you out.
+-No.
+-You are supposed to say 'you and what army'.
+-..What the hell is an army?
+
+As a band of cudgel operators emerged from the bushes, it did not take words to explain the meaning of the word 'army'. The farmer was forced to move on pain of cudgel. But everywhere he looked, he saw only land that was claimed, if not by his peer, the traveler or one of his kind. He saw armies, battles, and property owners that were willing to rent out their land that they acquired by means of violence. He had to submit to a lord, and could only choose a lord that offered the best deal.
+
+Obviously, this was illegimate. But one day, a lord rises to such a power that they dictate what is legitimate. And their word is enforced with violence, to which they hold a monopoly. Over time, the lord's word becomes law and is accepted by the people. Eventually, the ruling class stop taking property by force, and does the opposite: protecting property from such actions. Of course, only after all property is in their own hands.
+
+And all land, in fact all property, is originally acquired by a manner similar to this. Today, most of it has been purchased legitimately from its previous owner, who bought it from another etc. But who bought it from its very first owner? Can one buy a tree from mother nature? All property has originally been taken, not bought. Appropriated. If one buys a stolen item, are they now its lawful owner? Do they become such through an arbitary number of generations?
+
+If we give a group of children a basketful of toys, the expectation is that they may each take any toy they wish to play with. If the toy comes to bore them, we wish the child to put it back or to give it to someone else. Under no circumstances do we want the child to take a toy from another. But we also do not wish the child to claim many toys from the basket, more than they need. Toys that they will hoard, not use, and refuse others to even touch. This is the difference between personal and private property.
+
+Personal property is that which used by its owner. Most would agree, that people should be allowed to take what is unclaimed, should they have a use for it, and should no one else have a greater need for it. But private property is not acquired due to need, but generally with profit in mind. The profit is generally made via some form of renting. A plot or a building may be rented in the literal sense. Many things are rented in the following sense: a worker rents a machine or somesuch to work on in order to create something of value. The value produced is then divided into the worker's salary, and to surplus value, which is paid to the property's owner as rent. Those who own private property, which is generally the same as the means of production, are the burgeoise, and those who must pay to use it, the proletariat.
+
+But private property has not been created by its owner. It's manufactured by either nature or by laborer's hand. And its value is mostly in its exclusive nature: it's not that you can use something, it's that others cannot. And the exclusion has to be global to be profitable. No one would rent a plot of land if anyone could own some, or if there was still unclaimed land available. The only use private property has is in its ability to exploit the majority who do not have it. And the price of renting property or the means of production, which is necessary to sustain one's life (as any other means of survival has been made all but illegal by the system of private property), is what keeps the poor in poverty. Thus, it is very hard for those who own no private property to acquire any. But disappointingly, the same is not true for the the burgeoise. They may keep amassing property by exploiting workers to create more. This is made possible through continuous advancements that increase human productivity, of which the burgeoise devour the lion's share. And when their time has come, their progeny inherits it all. And so, a new generation is born. Some of them born to work, others to exploit work.
