@@ -18,6 +18,8 @@ asus rog strix - cherry
 MSI VIGOR GK70 - cherry
 Logitech G pro (X) - GX switches, sunken keys
 
+Ducky one 2 SF - small angle, plastic, sunken keys, lotsa flex, cherry, good light, nonstandard keys
+
 Cooler Master CK530 TKL RGB - Great RGB, half aluminum, gateron, good angle, bit tacky looking, cheap, floating
 
 HyperX alloy origins core - aluminum, hyperx, flat angle, needs software, floating, "RGB shows super brightly through puddings!"
