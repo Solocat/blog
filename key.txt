@@ -12,6 +12,10 @@ ducky -kallis
 steelseries -kallis
 xtrfy - kailh red
 
+asus rog strix - cherry
+MSI VIGOR GK70 - cherry
+Logitech G pro (X) - GX switches, sunken keys
+
 cherry mx
 kailh
 outemu
