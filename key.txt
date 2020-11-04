@@ -20,7 +20,7 @@ Logitech G pro (X) - GX switches, sunken keys
 
 Cooler Master CK530 TKL RGB - Great RGB, half aluminum, gateron, good angle, bit tacky looking, cheap, floating
 
-HyperX alloy origins core - aluminum, hyperx, flat angle, needs software, floating
+HyperX alloy origins core - aluminum, hyperx, flat angle, needs software, floating, "RGB shows super brightly through puddings!"
 
 GMMK - not very bright, flattish, half aluminum, floating
 
