@@ -4,6 +4,8 @@ clear switch housing: better spread lighting, especially for puddings
 ISO layout / nordic key layout
 strong RGB lighting
 programmable keys
+key profile
+keyboard angle
 
 hyperx -hyperx
 corsair
@@ -15,6 +17,18 @@ xtrfy - kailh red
 asus rog strix - cherry
 MSI VIGOR GK70 - cherry
 Logitech G pro (X) - GX switches, sunken keys
+
+Cooler Master CK530 TKL RGB - Great RGB, half aluminum, gateron, good angle, bit tacky looking, cheap, floating
+
+HyperX alloy origins core - aluminum, hyperx, flat angle, needs software, floating
+
+GMMK - not very bright, flattish, half aluminum, floating
+
+keychron - not bright
+
+razer huntsman - not bright??, flat, mostly plastic, not good software, propably bad for puddings, opto-mechanical, floating
+
+steelseries Apex 7 TKL - qX2 is gateron sourced, looks good, aluminum top, volume wheel, expensive, very bright, semiflat, floating
 
 cherry mx
 kailh
