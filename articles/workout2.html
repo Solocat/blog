@@ -1,0 +1,211 @@
+<body>
+    <div id="workoutApp">
+        <h1>Today</h1>
+        <button @click="addExercise()">Add exercise</button>
+        <exercise-block v-for="ex in today.exercises" :exercise="ex" :ex-types="exercises"></exercise-block>
+        <button>no Submit button</button>
+    </div>
+
+    
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script type="text/x-template" id="note-modal-template">
+    <div class="scrim">
+        <textarea :value="notes" @input="update($event.target.value)"></textarea>
+        <button @click="close()">Close</button>
+    </div>
+</script>
+
+<scipt type="text/x-template" id="set-block-template">
+    <span class="set">
+        Reps <input type="number" v-model="set.reps">
+        <button @click="noteOpen = true">Notes</button>
+        <note-modal v-show="noteOpen" v-model="set.notes" @close="noteOpen = false"></note-modal>
+    </span>
+</scipt>
+
+<script type="text/x-template" id="exercise-block-template">
+    <div class="exercise">
+        Name <select v-model="exercise.exerciseName">
+            <option v-for="ex in exTypes">{{ ex.name }}</option>
+        </select>
+        Weight <input type="number">
+        <button @click="noteOpen = true">Notes</button>
+        <div class="sets">
+            <button @click="addSet()">Add set</button>
+            <set-block v-for="set in exercise.sets" :set="set"></set-block>
+        </div>
+        
+        <hr>
+        <note-modal v-show="noteOpen" :item="exercise" v-model="exercise.notes" @close="noteOpen = false"></note-modal>
+    </div>
+</script>
+
+
+<script>
+
+var noteModal = {
+    template: '#note-modal-template',
+    props: ["item", "notes"],
+    components: {
+    },
+    computed: {
+    },
+    methods: {
+        update(value) {
+            this.$emit('input', value);
+        },
+        close() {
+            this.$emit("close");
+        }
+    }
+}
+
+var setBlock = {
+    template: '#set-block-template',
+    props: ["set"],
+    data: function() {
+        return {
+            noteOpen: false
+        }
+    },
+    components: {
+        "note-modal": noteModal
+    }
+}
+
+var exerciseBlock = {
+    template: '#exercise-block-template',
+    props: ["exercise", "exTypes"],
+    data: function() {
+        return {
+            noteOpen: false
+        }
+    },
+    methods: {
+        addSet() {
+            this.exercise.sets.push({
+                reps: 0,
+                notes: null
+            })
+        }
+    },
+    created() {
+    },
+    components: {
+        "note-modal": noteModal,
+        "set-block": setBlock
+    }
+}
+
+var app = new Vue({
+    el: "#workoutApp",
+    methods: {
+        addDay() {
+            console.log("day");
+        },
+        addExercise() {
+            this.today.exercises.push({
+                id: 1,
+                date: 12312321,
+                exerciseName: "",
+                notes: null,
+                weight: 0,
+                sets: [
+                ]
+            });
+        }
+    },
+    computed: {
+        selectedBlock() {
+            return this.blocks[this.selectedIndex];
+        }
+    },
+    data: {
+        today: {
+            exercises: []
+        },
+        editing: false,
+        exercises : [
+            {
+                "name": "Squat",
+                "image": null
+            }
+        ],
+        
+        user: {
+            "id": 1,
+            "name": "Olli",
+            "days": [
+                {
+                    "date": 12312321,
+                    "notes": null,
+                    "template": "Leg day",
+                    "exerciseInstances": [1]
+                }
+            ],
+            "exerciseInstances": [
+                {
+                    "id": 1,
+                    "date": 12312321,
+                    "exerciseName": "Squat",
+                    "notes": null,
+                    "weight": 10.5,
+                    "sets": [
+                        {
+                            "reps": 10,
+                            "notes": null
+                        }
+                    ]
+                }
+            ],
+            "customExercises": [
+                {
+                    "name": "Front squat",
+                    "image": null
+                }
+            ],
+            "workoutTemplates": [
+                {
+                    "name": "Leg day",
+                    "targetDays": "Monday",
+                    "exercises": [
+                        {
+                            "name": "Squat",
+                            "targetSets": 5,
+                            "targetReps": 5,
+                            "targetWeight": 10.5
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    components: {
+        "note-modal" : noteModal,
+        "exercise-block": exerciseBlock
+    },
+    created: function () {
+    }
+})
+</script>
+
+<style>
+    .exercise {
+
+    }
+    input[type=number] {
+        width: 4em;
+    }
+    .scrim {
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background: rgb(0 0 0 / 20%);
+    }
+</style>
