@@ -37,6 +37,20 @@ kailh
 outemu
 gateron - 2.5mm aktivointi
 
+HKCPXA = ABS
+HKCPXP = PBT
+BK = black
+WT = white
+NO = nordic
+G?
+
+Aura is US only
+HyperX: Nordic is ABS only. Nordic varmistui!
+https://www.amazon.de/HK-Gaming-Double-Pudding-Keycaps/dp/B07ZBVTWHP/ref=sr_1_3?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=pbt+pudding&qid=1605078646&sr=8-3
+^- PBT, comes with ANSI & ISO
+
+https://www.amazon.de/YMDK-Through-Profile-Mechanical-Keyboard/dp/B07ZJB1QH1/ref=sr_1_8?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=pbt+pudding&qid=1605078646&sr=8-8
+
 https://www.proshop.fi/Naeppaeimistoet
 
 https://www.gigantti.fi/product/gaming/pelinappaimistot/189436/nos-c-250-mini-pro-rgb-pelinappaimisto

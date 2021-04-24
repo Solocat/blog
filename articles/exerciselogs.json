@@ -1,0 +1,57 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Olli",
+            "days": [
+                {
+                    "date": 12312321,
+                    "notes": null,
+                    "template": "Leg day",
+                    "exerciseInstances": [1]
+                }
+            ],
+            "exerciseInstances": [
+                {
+                    "id": 1,
+                    "date": 12312321,
+                    "exerciseName": "Squat",
+                    "notes": null,
+                    "weight": 10.5,
+                    "sets": [
+                        {
+                            "reps": 10,
+                            "notes": null
+                        }
+                    ]
+                }
+            ],
+            "customExercises": [
+                {
+                    "name": "Front squat",
+                    "image": null
+                }
+            ],
+            "workoutTemplates": [
+                {
+                    "name": "Leg day",
+                    "targetDays": "Monday",
+                    "exercises": [
+                        {
+                            "name": "Squat",
+                            "targetSets": 5,
+                            "targetReps": 5,
+                            "targetWeight": 10.5
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "exercises": [
+        {
+            "name": "Squat",
+            "image": null
+        }
+    ]
+}
